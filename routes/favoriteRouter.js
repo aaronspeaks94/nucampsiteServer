@@ -27,7 +27,7 @@ favoriteRouter.route('/')
                         favorite.campsites.push(campsite._id)
                     }
                 });
-                Favorite.save()
+                favorite.save()
                 .then(favorite => {
                     res.statusCode = 200;
                     res.setHeader('Content-Type', 'application/json');
@@ -75,7 +75,7 @@ favoriteRouter.route('/:campsiteId')
             if(favorite) {
                 if(!favorite.campsites.includes(campsiteId)) {
                     favorite.campsites.push(campsiteId);
-                    favorites.save()
+                    favorite.save()
                     .then(favorite => {
                         res.statusCode = 200;
                         res.setHeader('Content-Type', 'application/json');
@@ -107,8 +107,8 @@ favoriteRouter.route('/:campsiteId')
         .then(favorite => {
             if (favorite) {
                 if (favorite.campsites.includes(campsiteId)) {
-                    favorite.campsite.splice(favorite.campsites.indexOf(campsiteId),1);
-                    favorites.save().then(favorite => {
+                    favorite.campsites.splice(favorite.campsites.indexOf(campsiteId),1);
+                    favorite.save().then(favorite => {
                         res.statusCode = 200;
                         res.setHeader('Conent-Type', 'application/json');
                         res.json(favorite);
@@ -120,6 +120,7 @@ favoriteRouter.route('/:campsiteId')
                 }
             }
         })
+        .catch((err) => next(err));
     });
 
 module.exports = favoriteRouter;
